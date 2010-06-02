@@ -24,27 +24,27 @@ class Expr(object):
 
     def __mul__(self, other):
         return Mul(self, other)
-        
+
     def __pow__(self, other):
         return Pow(self, other)
 
     def derivs(self, symbol):
         raise NotImplementedError("derivs is not implemented")
-        
+
 class Symbol(Expr):
 
     """
-    
+
     Input argument as an English letter.
-    
+
     """
-    
+
     def __init__(self, arg):
         self.arg = str(arg)
-        
+
     def __str__(self):
         return self.arg
-        
+
     def derivs(self, symbol):
         if str(symbol) == self.arg:
             return int(1)
@@ -57,34 +57,34 @@ These define sine and cosine functions with the ability to print themselves and 
 
 """
 
-s = Sin(x)
-s(2)
-
-class Sin(Expr):
+class sin(Expr):
 
     def __init__(self, arg):
         self.arg = arg
 
-    def __call__(self, x):
-        return math.sin(float(x))
+    def __call__(self, num):
+        return math.sin(float(num))
 
     def derivs(self, symbol):
         return cos(self.arg)*self.arg.derivs(symbol)
-       
+
     def __str__(self):
         return "sin(" + str(self.arg) + ")"
-       
+
 class cos(Expr):
 
     def __init__(self, arg):
         self.arg = arg
-       
+
+    def __call__(self, num):
+        return math.sin(float(num))
+
     def derivs(self, symbol):
         return sin(self.arg)*-1*self.arg.derivs(symbol)
 
     def __str__(self):
         return "cos(" + str(self.arg) + ")"
-        
+
 """
 
 Mul and Add are the objects that hold two bits of data that are multiplied or added respectively.
@@ -127,7 +127,6 @@ class Mul(Expr):
             muls.append(Mul(*mul_args))
         return Add(*muls)
 
-
 class Add(Expr):
 
     def __init__(self, *args):
@@ -159,7 +158,7 @@ class Add(Expr):
             else:
                 deriv_args = Add(deriv_args, arg.derivs(symbol))
         return deriv_args
-        
+
 """
 
 Pow raises arguments to a power.
@@ -200,13 +199,13 @@ a wave function; pretty basic right now
 class psi(Expr):
     def __init__(self, wave):
         self.wave = wave
-        
+
     def __str__(self):
         return self.wave.__str__()
-        
+
     def derivs(self):
         return self.wave.derivs()
-        
+
 x = Symbol('x')
 y = Symbol('y')
 z = Symbol('z')
